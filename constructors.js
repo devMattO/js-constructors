@@ -25,7 +25,7 @@ function Spell( name, cost, description ) {
    * @name getDetails
    * @return {string} details containing all of the spells information.
    */
-Spell.prototype.getDetails = function(){
+Spell.prototype.getDetails = function() {
   return this.name + ' ' + this.cost + ' ' + this.description;
 };
 
@@ -55,7 +55,7 @@ Spell.prototype.getDetails = function(){
  * @property {string} description
  */
 
-DamageSpell.prototype = Object.create(Spell.prototype, {
+DamageSpell.prototype = Object.create( Spell.prototype, {
   constructor: DamageSpell
 });
 
@@ -83,7 +83,7 @@ function DamageSpell( name, cost, damage, description ){ //all necessary paramet
  * @method  invoke
  */
 
-Spellcaster.prototype = Object.create(DamageSpell.prototype, {
+Spellcaster.prototype = Object.create( DamageSpell.prototype, {
   constructor: Spellcaster
 });
 
@@ -109,12 +109,12 @@ Spellcaster.prototype.isAlive = true;
    */
 
 Spellcaster.prototype.inflictDamage = function( damage ) {
-  if( damage > this.health ){
-    damage = this.health;
-  }
-  this.health -= damage;
-  if( this.health <= 0 ) {
+  var healthAfterDamage = this.health - damage;
+  if( healthAfterDamage <= 0 ) {
+    this.health = 0;
     this.isAlive = false;
+  } else {
+    this.health = healthAfterDamage;
   }
 
 };
@@ -129,10 +129,10 @@ Spellcaster.prototype.inflictDamage = function( damage ) {
    */
 
 Spellcaster.prototype.spendMana = function( cost ) {
-  if( this.mana >= cost ){
+  if( this.mana >= cost ) {
     this.mana -= cost;
     return true;
-  }else{
+  } else {
     return false;
   }
 };
@@ -163,3 +163,25 @@ Spellcaster.prototype.spendMana = function( cost ) {
    * @param  {Spellcaster} target         The spell target to be inflicted.
    * @return {boolean}                    Whether the spell was successfully cast.
    */
+  Spellcaster.prototype.invoke = function( spell, target ) {
+    if( spell instanceof DamageSpell && target instanceof Spellcaster === false ) { //checks whatever is being passed through spell and target parameters and returns false if target is not Spellcaster
+      return false;
+    }
+    if( spell instanceof DamageSpell && target instanceof Spellcaster ) { // If it is a `DamageSpell`, the second parameter should be a `Spellcaster`.
+      if( this.spendMana(spell.cost) ) { // check if the spellcaster has enough mana to cast the spell. If it can cast a spell, it should lose mana  equal to the spell's cost.
+        target.inflictDamage( spell.damage ); // if it is a `DamageSpell` reduce the target's health by the spell's damage value.
+        return true; // If there is enough mana to cast the spell, return `true`
+      } else {
+        return false;
+      }
+    }
+    if( spell instanceof Spell && !( spell instanceof DamageSpell) ) { //if instanceof Spell AND not an instance of Damage Spell(ONLY SPELL)
+      if( this.spendMana(spell.cost) ) { // check if the spellcaster has enough mana to cast the spell. If it can cast a spell, it should lose mana  equal to the spell's cost.
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  };
