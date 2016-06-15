@@ -60,9 +60,9 @@ DamageSpell.prototype = Object.create(Spell.prototype, {
 });
 
 
-function DamageSpell(name, cost, damage, description){ //all necessary parameters
-  Spell.call( this, name, cost, description); //adds damage property
-  this.damage = damage; //setting dmage equal to whatever is passed as argument
+function DamageSpell( name, cost, damage, description ){ //all necessary parameters
+  Spell.call( this, name, cost, description ); //adds damage property
+  this.damage = damage; //setting damage equal to whatever is passed as argument
 }
 
 
@@ -83,6 +83,20 @@ function DamageSpell(name, cost, damage, description){ //all necessary parameter
  * @method  invoke
  */
 
+Spellcaster.prototype = Object.create(DamageSpell.prototype, {
+  constructor: Spellcaster
+});
+
+function Spellcaster( name, health, mana ) {
+  Spell.call( this, name );
+  this.health = health;
+  this.mana = mana;
+}
+
+Spellcaster.prototype.isAlive = true;
+
+
+
   /**
    * @method inflictDamage
    *
@@ -94,6 +108,16 @@ function DamageSpell(name, cost, damage, description){ //all necessary parameter
    * @param  {number} damage  Amount of damage to deal to the spellcaster
    */
 
+Spellcaster.prototype.inflictDamage = function( damage ) {
+  if( damage > this.health ){
+    damage = this.health;
+  }
+  this.health -= damage;
+  if( this.health <= 0 ) {
+    this.isAlive = false;
+  }
+
+};
   /**
    * @method spendMana
    *
