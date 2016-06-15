@@ -11,6 +11,10 @@
  * @method   printDetails
  */
 
+function Spell(name, cost, description){
+
+}
+
   /**
    * Returns a string of all of the spell's details.
    * The format doesn't matter, as long as it contains the spell name, cost, and description.
