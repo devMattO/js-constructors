@@ -25,7 +25,6 @@ function Spell( name, cost, description ) {
    * @name getDetails
    * @return {string} details containing all of the spells information.
    */
-
 Spell.prototype.getDetails = function(){
   return this.name + ' ' + this.cost + ' ' + this.description;
 };
@@ -60,7 +59,7 @@ DamageSpell.prototype = Object.create(Spell.prototype, {
   constructor: DamageSpell
 });
 
-var DamageSpell = new Spell('DamageSpell');
+// var DamageSpell = new Spell('Damage Spell');
 
 function DamageSpell(name, cost, damage, description){
   Spell.call( this, cost, damage, description);
