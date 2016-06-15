@@ -13,6 +13,8 @@
 
 function Spell(name, cost, description){
   this.name = name;
+  this.cost = cost;
+  this.description = description;
 }
 
   /**
