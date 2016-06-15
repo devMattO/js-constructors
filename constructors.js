@@ -59,11 +59,10 @@ DamageSpell.prototype = Object.create(Spell.prototype, {
   constructor: DamageSpell
 });
 
-// var DamageSpell = new Spell('Damage Spell');
 
-function DamageSpell(name, cost, damage, description){
-  Spell.call( this, cost, damage, description);
-  this.damage = damage;
+function DamageSpell(name, cost, damage, description){ //all necessary parameters
+  Spell.call( this, name, cost, description); //adds damage property
+  this.damage = damage; //setting dmage equal to whatever is passed as argument
 }
 
 
